@@ -33,6 +33,11 @@ class EmployeesController < ApplicationController
     head :no_content
   end
 
+  def salary
+    employee = Employee.find(params[:id])
+    render json: SalaryCalculator.call(employee), status: :ok
+  end
+
   private
 
   def set_employee
