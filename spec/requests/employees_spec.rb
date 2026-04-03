@@ -20,17 +20,19 @@ RSpec.describe "Employees", type: :request do
   end
 
   describe "GET /employees" do
+    let!(:employee) { Employee.create!(employee_params[:employee]) }
+
     it "returns all employees" do
-      Employee.create!(employee_params[:employee])
       get "/employees"
       expect(response).to have_http_status(:ok)
     end
   end
 
   describe "GET /employees/:id" do
+    let!(:employee) { Employee.create!(employee_params[:employee]) }
+
     it "returns specific employee" do
-      emp = Employee.create!(employee_params[:employee])
-      get "/employees/#{emp.id}"
+      get "/employees/#{employee.id}"
       expect(response).to have_http_status(:ok)
     end
   end
