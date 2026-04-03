@@ -19,7 +19,7 @@ RSpec.describe "Salaries", type: :request do
       expect(json["deduction"]).to eq(100)
       expect(json["net"]).to eq(900)
     end
-    
+
     it "calculates salary for United States" do
       emp = Employee.create!(
         full_name: "A",
@@ -32,6 +32,20 @@ RSpec.describe "Salaries", type: :request do
 
       json = JSON.parse(response.body)
       expect(json["net"]).to eq(880)
+    end
+
+    it "returns full salary for other countries" do
+      emp = Employee.create!(
+        full_name: "A",
+        job_title: "Dev",
+        country: "UK",
+        salary: 1000
+      )
+
+      get "/employees/#{emp.id}/salary"
+
+      json = JSON.parse(response.body)
+      expect(json["net"]).to eq(1000)
     end
   end
 end
