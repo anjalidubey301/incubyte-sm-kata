@@ -16,4 +16,9 @@ RSpec.describe Employee, type: :model do
     employee = Employee.new(full_name: "Anjali", job_title: "Developer", country: nil)
     expect(employee).to_not be_valid
   end
+
+   it "is invalid without job_title" do
+    employee = Employee.new(full_name: "Anjali", job_title: "Developer", country: "India", salary: nil)
+    expect(employee).to_not be_valid
+  end
 end
