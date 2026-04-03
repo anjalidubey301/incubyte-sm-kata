@@ -1,6 +1,9 @@
 class EmployeesController < ApplicationController
+  before_action :set_employee, only: [:show, :update, :destroy]
+
   def create
     employee = Employee.new(employee_params)
+
     if employee.save
       render json: employee, status: :created
     else
@@ -14,34 +17,30 @@ class EmployeesController < ApplicationController
   end
 
   def show
-    employee = Employee.find(params[:id])
-    render json: employee, status: :ok
+    render json: @employee, status: :ok
   end
-  
+
   def update
-    employee = Employee.find(params[:id])
-    if employee.update(employee_params)
-      render json: employee, status: :ok
+    if @employee.update(employee_params)
+      render json: @employee, status: :ok
     else
-      render json: { errors: employee.errors }, status: :unprocessable_entity
+      render json: { errors: @employee.errors }, status: :unprocessable_entity
     end
   end
 
   def destroy
-    employee = Employee.find_by(id: params[:id])
-
-    if employee.nil?
-      render json: { error: "Employee not found" }, status: :not_found
-    else
-      employee.destroy
-      head :no_content
-    end
+    @employee.destroy
+    head :no_content
   end
 
   private
 
+  def set_employee
+    @employee = Employee.find_by(id: params[:id])
+    render json: { error: "Employee not found" }, status: :not_found if @employee.nil?
+  end
+
   def employee_params
     params.require(:employee).permit(:full_name, :job_title, :country, :salary)
   end
-
 end
