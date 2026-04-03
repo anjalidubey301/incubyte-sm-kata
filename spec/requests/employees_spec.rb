@@ -50,4 +50,18 @@ RSpec.describe "Employees", type: :request do
       expect(response).to have_http_status(:unprocessable_entity)
     end
   end
+
+  describe "DELETE /employees/:id" do
+    let!(:employee) { Employee.create!(employee_params[:employee]) }
+
+    it "deletes employee successfully" do
+      delete "/employees/#{employee.id}"
+      expect(response).to have_http_status(:no_content)
+    end
+
+    it "returns not_found when employee does not exist" do
+      delete "/employees/99999"
+      expect(response).to have_http_status(:not_found)
+    end
+  end
 end
