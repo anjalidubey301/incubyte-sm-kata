@@ -8,4 +8,12 @@ class MetricsController < ApplicationController
       average: employees.average(:salary).to_f
     }, status: :ok
   end
+   
+  def job_title
+    employees = Employee.where(job_title: params[:job_title])
+
+    render json: {
+      average: employees.average(:salary).to_f
+    }, status: :ok
+  end
 end
