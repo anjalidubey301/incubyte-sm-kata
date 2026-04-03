@@ -17,6 +17,15 @@ class EmployeesController < ApplicationController
     employee = Employee.find(params[:id])
     render json: employee, status: :ok
   end
+  
+  def update
+    employee = Employee.find(params[:id])
+    if employee.update(employee_params)
+      render json: employee, status: :ok
+    else
+      render json: { errors: employee.errors }, status: :unprocessable_entity
+    end
+  end
 
   private
 
