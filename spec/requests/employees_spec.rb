@@ -36,4 +36,18 @@ RSpec.describe "Employees", type: :request do
       expect(response).to have_http_status(:ok)
     end
   end
+  
+  describe "PUT /employees/:id" do
+    let!(:employee) { Employee.create!(employee_params[:employee]) }
+
+    it "updates employee successfully" do
+      put "/employees/#{employee.id}", params: { employee: { job_title: "Senior Dev" } }
+      expect(response).to have_http_status(:ok)
+    end
+
+    it "returns unprocessable_entity for invalid data" do
+      put "/employees/#{employee.id}", params: { employee: { full_name: nil } }
+      expect(response).to have_http_status(:unprocessable_entity)
+    end
+  end
 end
