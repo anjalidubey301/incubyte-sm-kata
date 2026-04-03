@@ -1,5 +1,5 @@
 class EmployeesController < ApplicationController
-  before_action :set_employee, only: [:show, :update, :destroy]
+  before_action :set_employee, only: [:show, :update, :destroy, :salary]
 
   def create
     employee = Employee.new(employee_params)
@@ -34,8 +34,7 @@ class EmployeesController < ApplicationController
   end
 
   def salary
-    employee = Employee.find(params[:id])
-    render json: SalaryCalculator.call(employee), status: :ok
+    render json: SalaryCalculator.call(@employee), status: :ok
   end
 
   private
